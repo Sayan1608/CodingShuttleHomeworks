@@ -21,6 +21,11 @@ public class Subject {
     @ManyToMany(mappedBy = "subjects")
     @JsonIgnore
     private Set<Student> students;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "assigned_professor_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Professor assignedProfessor;
+
 
     @Override
     public boolean equals(Object o) {

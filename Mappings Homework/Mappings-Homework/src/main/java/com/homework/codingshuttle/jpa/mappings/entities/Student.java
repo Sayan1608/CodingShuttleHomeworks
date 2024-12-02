@@ -27,6 +27,9 @@ public class Student {
     joinColumns = @JoinColumn(name = "student_id"),
     inverseJoinColumns = @JoinColumn(name = "subject_id"))
     private Set<Subject> subjects;
+    @ManyToMany(mappedBy = "students")
+    @JsonIgnore
+    private Set<Professor> professors;
 
     @Override
     public boolean equals(Object o) {

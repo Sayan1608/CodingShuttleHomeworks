@@ -3,6 +3,7 @@ package com.codingshuttle.libraryManagementSystem.controllers;
 import com.codingshuttle.libraryManagementSystem.dtos.BookDto;
 import com.codingshuttle.libraryManagementSystem.exceptions.ResourceNotFoundException;
 import com.codingshuttle.libraryManagementSystem.services.BookService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<BookDto> createNewBook(@RequestBody BookDto bookDto){
+    public ResponseEntity<BookDto> createNewBook(@RequestBody @Valid BookDto bookDto){
         return new ResponseEntity<>(bookService.createNewBook(bookDto), HttpStatus.CREATED);
     }
 

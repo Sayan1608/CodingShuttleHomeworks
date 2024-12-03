@@ -16,7 +16,10 @@ public class AuthorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
+
     @OneToMany(mappedBy = "bookAuthor")
     private Set<BookEntity> publishedBooks;
 

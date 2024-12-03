@@ -17,11 +17,21 @@ public class BookEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false,unique = true)
     private String isbn;
+
+    @Column(nullable = false,unique = true)
     private String title;
+
     private LocalDate publishedOn;
+
+    @Column(nullable = false)
     private BigDecimal price;
+
+    @Column(nullable = false)
     private Integer noOfPages;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "book_author_id",referencedColumnName = "id")
     private AuthorEntity bookAuthor;

@@ -4,6 +4,7 @@ import com.codingshuttle.libraryManagementSystem.dtos.AuthorDto;
 import com.codingshuttle.libraryManagementSystem.dtos.BookDto;
 import com.codingshuttle.libraryManagementSystem.exceptions.ResourceNotFoundException;
 import com.codingshuttle.libraryManagementSystem.services.AuthorService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class AuthorController {
     }
 
     @PostMapping
-    public ResponseEntity<AuthorDto> createNewAuthor(@RequestBody AuthorDto authorDto){
+    public ResponseEntity<AuthorDto> createNewAuthor(@RequestBody @Valid AuthorDto authorDto){
         return new ResponseEntity<>(authorService.createNewAuthor(authorDto), HttpStatus.CREATED);
     }
 

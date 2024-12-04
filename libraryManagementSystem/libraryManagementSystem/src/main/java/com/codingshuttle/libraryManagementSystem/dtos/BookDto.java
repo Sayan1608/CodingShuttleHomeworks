@@ -30,4 +30,5 @@ public class BookDto {
 
     @Min(value = 100, message = "No of pages should be at least 100")
     private Integer noOfPages;
+
 }

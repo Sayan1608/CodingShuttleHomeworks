@@ -1,5 +1,6 @@
 package com.codingshuttle.libraryManagementSystem.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +22,7 @@ public class AuthorEntity {
     private String name;
 
     @OneToMany(mappedBy = "bookAuthor")
+    @JsonIgnore
     private Set<BookEntity> publishedBooks;
 
     @Override

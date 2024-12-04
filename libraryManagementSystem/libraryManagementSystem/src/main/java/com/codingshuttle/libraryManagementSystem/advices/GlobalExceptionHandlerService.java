@@ -1,5 +1,6 @@
 package com.codingshuttle.libraryManagementSystem.advices;
 
+import com.codingshuttle.libraryManagementSystem.exceptions.InvalidPayloadException;
 import com.codingshuttle.libraryManagementSystem.exceptions.ResourceNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -55,6 +56,19 @@ public class GlobalExceptionHandlerService {
         ApiError apiError = ApiError.builder()
                 .status(HttpStatus.BAD_REQUEST)
                 .messege(rootCause != null ? rootCause.getMessage() : exception.getMessage())
+                .build();
+
+        return buildErrorResponseBody(apiError);
+    }
+
+    @ExceptionHandler(InvalidPayloadException.class)
+    public ResponseEntity<ApiResponse<?>> handleInvalidPayloadException(InvalidPayloadException exception) {
+
+        // Build ApiError with the user-friendly message
+        ApiError apiError = ApiError.builder()
+                .status(HttpStatus.BAD_REQUEST)
+                .messege(exception.getMessage())
+                .subErrors(exception.getErrorsMessages())
                 .build();
 
         return buildErrorResponseBody(apiError);

@@ -38,4 +38,23 @@ public class AuthorController {
                 .map(ResponseEntity::ok)
                 .orElseThrow(()->new ResourceNotFoundException("Author Not Found with id : " + id));
     }
+
+    @PutMapping(path = "/{authorId}")
+    public ResponseEntity<AuthorDto> updateAuthorById(
+            @PathVariable(name = "authorId") Long id,
+            @RequestBody @Valid AuthorDto authorDto){
+        return ResponseEntity.ok(authorService.updateAuthorById(id,authorDto));
+    }
+
+    @PutMapping(path = "/author/{authorId}/book/{bookId}")
+    public ResponseEntity<AuthorDto> assignBookToAuthor(
+            @PathVariable(name = "authorId") Long authorId,
+            @PathVariable(name = "bookId") Long bookId){
+        return ResponseEntity.ok(authorService.assignBookToAuthor(authorId,bookId));
+    }
+
+    @GetMapping(path = "/book/{bookId}")
+    public ResponseEntity<AuthorDto> getBookAuthor(@PathVariable(name = "bookId") Long id){
+        return ResponseEntity.ok(authorService.getBookAuthor(id));
+    }
 }

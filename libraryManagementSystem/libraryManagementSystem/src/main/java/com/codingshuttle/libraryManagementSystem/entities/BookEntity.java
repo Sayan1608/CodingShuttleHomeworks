@@ -32,7 +32,7 @@ public class BookEntity {
     @Column(nullable = false)
     private Integer noOfPages;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "book_author_id",referencedColumnName = "id")
     private AuthorEntity bookAuthor;
 

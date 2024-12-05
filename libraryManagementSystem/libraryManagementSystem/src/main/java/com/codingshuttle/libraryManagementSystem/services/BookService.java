@@ -117,4 +117,24 @@ public class BookService {
         }
 
     }
+
+    public Boolean deleteBookById(Long id) {
+        isExistsBookById(id);
+        bookRepository.deleteById(id);
+        return true;
+    }
+
+    public BookDto findBookByTitle(String title) {
+        Optional<BookEntity> bookEntity = bookRepository.findByTitle(title);
+        return bookEntity.map(book->modelMapper.map(book, BookDto.class))
+                .orElseThrow(()->new ResourceNotFoundException("Book not found with title : " + title));
+    }
+
+    public Set<BookDto> getBooksPublishedAfterDate(LocalDate date) {
+        Set<BookEntity> bookEntitySet = bookRepository.findByPublishedOnAfter(date);
+        return bookEntitySet
+                .stream()
+                .map(book->modelMapper.map(book, BookDto.class))
+                .collect(Collectors.toSet());
+    }
 }

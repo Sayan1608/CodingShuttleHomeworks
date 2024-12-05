@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -63,6 +64,21 @@ public class BookController {
     @GetMapping(path = "/v1")
     public List<BookEntity> getAllBooksAll(){
         return bookService.getAllBooksAll();
+    }
+
+    @DeleteMapping(path = "/{bookId}")
+    public ResponseEntity<Boolean> deleteBookById(@PathVariable(name = "bookId") Long id){
+        return ResponseEntity.ok(bookService.deleteBookById(id));
+    }
+
+    @GetMapping(path = "/bookTitle/{bookTitle}")
+    public ResponseEntity<BookDto> findBookByTitle(@PathVariable(name = "bookTitle") String title){
+        return ResponseEntity.ok(bookService.findBookByTitle(title));
+    }
+
+    @GetMapping(path = "/afterDate/{publishedAfter}")
+    public ResponseEntity<Set<BookDto>> getBooksPublishedAfterDate(@PathVariable(name = "publishedAfter")LocalDate date){
+        return ResponseEntity.ok(bookService.getBooksPublishedAfterDate(date));
     }
 
 

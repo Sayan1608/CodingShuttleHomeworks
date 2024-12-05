@@ -1,7 +1,6 @@
 package com.codingshuttle.libraryManagementSystem.services;
 
 import com.codingshuttle.libraryManagementSystem.dtos.AuthorDto;
-import com.codingshuttle.libraryManagementSystem.dtos.BookDto;
 import com.codingshuttle.libraryManagementSystem.entities.AuthorEntity;
 import com.codingshuttle.libraryManagementSystem.entities.BookEntity;
 import com.codingshuttle.libraryManagementSystem.exceptions.ResourceNotFoundException;
@@ -61,30 +60,54 @@ public class AuthorService {
     }
 
     public AuthorDto assignBookToAuthor( Long authorId,Long bookId) {
-        Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
-        Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
+        if(bookRepository.existsById(bookId)){
+            Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
+            Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
 
-        AuthorEntity mappedAuthorEntity = authorEntity.flatMap(author ->
-                bookEntity.map(
-                        book -> {
-                            book.setBookAuthor(author);
-                            bookRepository.save(book);
-                            author.getPublishedBooks().add(book);
-                            return author;
-                        }
-                )
-        ).orElseThrow(() -> new ResourceNotFoundException("Author not found with id : " + bookId));
-        return modelMapper.map(mappedAuthorEntity, AuthorDto.class);
+            AuthorEntity mappedAuthorEntity = authorEntity.flatMap(author ->
+                    bookEntity.map(
+                            book -> {
+                                book.setBookAuthor(author);
+                                bookRepository.save(book);
+                                author.getPublishedBooks().add(book);
+                                return author;
+                            }
+                    )
+            ).orElseThrow(() -> new ResourceNotFoundException("Author not found with id : " + bookId));
+            return modelMapper.map(mappedAuthorEntity, AuthorDto.class);
+        }else{
+            throw new ResourceNotFoundException("Book not found with id : " + bookId);
+        }
+
     }
 
 
     public AuthorDto getBookAuthor(Long bookId) {
-       BookEntity bookEntity = BookEntity.builder()
-               .id(bookId)
-               .build();
+       if(bookRepository.existsById(bookId)) {
+           BookEntity bookEntity = BookEntity.builder()
+                   .id(bookId)
+                   .build();
 
-        AuthorEntity authorDto = authorRepository.findByPublishedBooks(bookEntity);
-        return modelMapper.map(authorDto, AuthorDto.class);
+           AuthorEntity authorDto = authorRepository.findByPublishedBooks(bookEntity);
+           return modelMapper.map(authorDto, AuthorDto.class);
+       }else{
+           throw new ResourceNotFoundException("Book not found with id : " + bookId);
+       }
 
+
+    }
+
+    public Boolean deleteAuthorById(Long id) {
+        isExistsAuthorById(id);
+        authorRepository.deleteById(id);
+        return true;
+    }
+
+    public Set<AuthorDto> getAuthorByName(String name) {
+        Set<AuthorEntity> authorEntity = authorRepository.findByName(name);
+        return authorEntity
+                .stream()
+                .map(author->modelMapper.map(author, AuthorDto.class))
+                .collect(Collectors.toSet());
     }
 }

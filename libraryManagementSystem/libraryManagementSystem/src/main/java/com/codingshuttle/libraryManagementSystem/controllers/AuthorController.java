@@ -1,7 +1,6 @@
 package com.codingshuttle.libraryManagementSystem.controllers;
 
 import com.codingshuttle.libraryManagementSystem.dtos.AuthorDto;
-import com.codingshuttle.libraryManagementSystem.dtos.BookDto;
 import com.codingshuttle.libraryManagementSystem.exceptions.ResourceNotFoundException;
 import com.codingshuttle.libraryManagementSystem.services.AuthorService;
 import jakarta.validation.Valid;
@@ -56,5 +55,15 @@ public class AuthorController {
     @GetMapping(path = "/book/{bookId}")
     public ResponseEntity<AuthorDto> getBookAuthor(@PathVariable(name = "bookId") Long id){
         return ResponseEntity.ok(authorService.getBookAuthor(id));
+    }
+
+    @DeleteMapping(path = "/{authorId}")
+    public ResponseEntity<Boolean> deleteAuthorById(@PathVariable(name = "authorId") Long id){
+        return ResponseEntity.ok(authorService.deleteAuthorById(id));
+    }
+
+    @GetMapping(path = "/name/{authorName}")
+    public ResponseEntity<Set<AuthorDto>> getAuthorByName(@PathVariable(name = "authorName") String name){
+        return ResponseEntity.ok(authorService.getAuthorByName(name));
     }
 }
